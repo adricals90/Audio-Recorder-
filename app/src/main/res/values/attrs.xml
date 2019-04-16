@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VisualizerView">
+        <attr name="columns" format="integer" />
+        <attr name="color" format="color" />
+        <attr name="range">
+            <enum name="top" value="1" />
+            <enum name="bottom" value="0" />
+        </attr>
+
+        <attr name="render">
+            <flag name="bar" value="0x1" />
+        </attr>
+
+    </declare-styleable>
+
+
+</resources>
