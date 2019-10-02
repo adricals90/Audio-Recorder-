@@ -1,17 +1,22 @@
 package c.adricals.AudioRecorder;
 
+import android.app.Application;
+
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-public class RocordingViewModel extends androidx.lifecycle.ViewModel {
+public class RocordingViewModel extends AndroidViewModel {
 
     LiveData<List<records>> recordingsList = new MutableLiveData<>();
-    RecordingStorageAccess e = new RecodingsAccessImplementation();
+    RecordingStorageAccess e = new RecordingsAccessImplementation();
 
-
-    public void setRecordingsList(LiveData<List<records>> recordingsList) {
-        this.recordingsList = recordingsList;
+    public RocordingViewModel(@NonNull Application application) {
+        super(application);
     }
+
+
 }

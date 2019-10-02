@@ -6,6 +6,10 @@ public class records {
     String details;
     int recImage = 0;
 
+    records() {
+
+    }
+
 
     records(String name, String det) {
         recordName = name;

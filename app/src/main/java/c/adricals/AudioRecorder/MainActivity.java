@@ -1,7 +1,11 @@
 package c.adricals.AudioRecorder;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.icu.util.Calendar;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 
@@ -17,12 +21,17 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static androidx.appcompat.app.AlertDialog.*;
 
@@ -32,14 +41,18 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     ArrayList<records> myList = new ArrayList<records>();
+
+
     private static int PERMISSION_CODE = 1021;
     private String[] permission = {Manifest.permission.RECORD_AUDIO};
 
     private static String mFileName;
-    MediaRecorder myRecorder;
     Button record;
     Button stop;
-    Visualizer myVisualizer;
+    // Visualizer myVisualizer;
+
+    RecAudio recordAudio;
+    RecordingsAccessImplementation recImplement;
 
 
     MediaPlayer mPlayer;
@@ -47,24 +60,38 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnClickListener recordListener = new View.OnClickListener() {
 
-        boolean mrecord = true;
+        boolean mRecord = true;
 
         @Override
         public void onClick(View v) {
 
-            if (mrecord) {
-                startRecording();
-                record.setText("STOP");
+            if (permissionCheck() == false) {
+                return;
+            }
+
+            if (mRecord) {
+
+                recordAudio.OnRecording();
+                record.setText("Stop");
 
             } else {
-                stopRecording();
-                record.setText("RECORD");
-
+                recordAudio.onStopRecording();
+                record.setText("Record");
             }
-            mrecord = !mrecord;
+            mRecord = !mRecord;
 
         }
     };
+
+    private View.OnClickListener stopButton = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            // recordAudio.onStopRecording();
+            record.setText("Record");
+        }
+    };
+
 
 
     @Override
@@ -74,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
         //recyclerView data and setup
 
-        for (int i = 1; i <= 20; i++) {
+
+        for (int i = 1; i <= 3; i++) {
 
             myList.add(new records("Recorder Name ", "Details :"));
 
@@ -99,51 +127,41 @@ public class MainActivity extends AppCompatActivity {
         record = findViewById(R.id.recordButton);
         stop = findViewById(R.id.stopButton);
 
-        mFileName = getExternalCacheDir().getAbsolutePath() + "/recording.3gp";
+
+        recordAudio = new RecAudio();
+
 
         record.setOnClickListener(recordListener);
 
+        // recImplement = new RecordingsAccessImplementation();
 
-    }
+        File[] myfiles = recordAudio.directory.listFiles();
 
-    public void stopRecording() {
-        myRecorder.stop();
-        myRecorder.release();
-
-    }
-
-
-    public void startRecording() {
-
-        if (permissionCheck()) {
-
-            myRecorder = new MediaRecorder();
-            myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            myRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            myRecorder.setOutputFile(mFileName);
-            myRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        for (File i : myfiles) {
+            if (i.isDirectory()) {
+                Log.i("directory", "this is a dir " + i.getName());
+            } else {
+                Log.i("file", "this is a file " + i.getName());
+                myList.add(new records(i.getName(), "cache"));
 
 
-            Toast.makeText(this, "Permission Granted ", Toast.LENGTH_LONG).show();
-
-            try {
-                myRecorder.prepare();
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
-            myRecorder.start();
         }
 
-
-    }
-
-
-    public void onRecord() {
+        Log.i("file", "end of oncreate" + myfiles.length);
 
 
     }
+
+   /* @Override
+    public void onStop(){
+        super.onStop();
+        if(recordAudio.myRecorder != null){
+            recordAudio.myRecorder.release();
+            recordAudio.myRecorder = null;
+        }
+    }*/
+
 
 
     public boolean permissionCheck() {
@@ -186,4 +204,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

@@ -38,29 +38,34 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/playButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="110dp"
-            android:layout_height="62dp"
+            android:layout_width="134dp"
+            android:layout_height="58dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="69dp"
             android:layout_marginTop="291dp"
             android:layout_marginEnd="44dp"
             android:layout_toEndOf="@+id/stopButton"
-            android:elevation="3dp"
+            android:elevation="2dp"
             app:cornerRadius="28dp"
             app:icon="@drawable/ic_play_arrow_black_24dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/stopButton"
+
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="76dp"
+            android:layout_marginStart="43dp"
             android:layout_marginTop="296dp"
             android:layout_marginEnd="24dp"
-            android:background="@color/colorAccent"
+            android:background="#ff0000"
+            android:backgroundTint="#00B38E8E"
+            android:backgroundTintMode="src_atop"
             android:elevation="9dp"
-            app:cornerRadius="28dp"
+            app:cornerRadius="16dp"
             app:icon="@drawable/ic_stop_black_24dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -71,13 +76,14 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="58dp"
+            android:elevation="3dp"
             android:fontFamily="sans-serif"
-            android:elevation="8dp"
             android:text="Record"
-            app:cornerRadius="50dp"
             app:backgroundTint="#ff2d55"
+            app:cornerRadius="50dp"
 
             />
+
 
     </RelativeLayout>
 
@@ -86,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape"
-        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable="false"
         app:behavior_peekHeight="80dp">
 
@@ -100,20 +106,20 @@
                 android:id="@+id/recordigs"
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
-                android:text="Recordings"
-                android:textSize="20sp"
-                android:textColor="#FFFFFF	"
-                android:layout_marginTop="8dp"
-                android:textAlignment="center"
                 android:layout_gravity="center|top"
-                android:fontFamily="sans-serif" />
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Recordings"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF	"
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/myRecycleView"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                android:scrollbars="vertical"
-                android:layout_gravity="bottom" />
+                android:layout_gravity="bottom"
+                android:scrollbars="vertical" />
 
 
         </LinearLayout>
