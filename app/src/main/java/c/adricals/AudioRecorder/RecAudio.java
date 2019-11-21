@@ -45,7 +45,6 @@ public class RecAudio {
         directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), dirName);
 
         if (!directory.exists()) {
-
             directory.mkdir();
         }
 

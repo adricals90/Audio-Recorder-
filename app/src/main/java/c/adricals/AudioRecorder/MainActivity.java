@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,8 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import static androidx.appcompat.app.AlertDialog.*;
 
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mReycleView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    ArrayList<records> myList = new ArrayList<records>();
+    RecordingViewModel model;
 
 
     private static int PERMISSION_CODE = 1021;
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     // Visualizer myVisualizer;
 
     RecAudio recordAudio;
-    RecordingsAccessImplementation recImplement;
+
 
 
     MediaPlayer mPlayer;
@@ -99,23 +103,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //recyclerView data and setup
-
-
-        for (int i = 1; i <= 3; i++) {
-
-            myList.add(new records("Recorder Name ", "Details :"));
-
-        }
 
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-
 
         mReycleView = findViewById(R.id.myRecycleView);
         mReycleView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mReycleView.setLayoutManager(mLayoutManager);
-        mAdapter = new myAdapter(myList);
+
+        model = ViewModelProviders.of(this).get(RecordingViewModel.class);
+        model.init();
+        model.getRecords().observe(this, new Observer<List<records>>() {
+            @Override
+            public void onChanged(List<records> records) {
+                mAdapter.notifyDataSetChanged();
+
+            }
+
+        });
+
+        mAdapter = new myAdapter(this, model.getRecords().getValue());
         mReycleView.setAdapter(mAdapter);
 
         //end of recyclerView
@@ -135,7 +142,10 @@ public class MainActivity extends AppCompatActivity {
 
         // recImplement = new RecordingsAccessImplementation();
 
-        File[] myfiles = recordAudio.directory.listFiles();
+
+
+
+        /*File[] myfiles = recordAudio.directory.listFiles();
 
         for (File i : myfiles) {
             if (i.isDirectory()) {
@@ -149,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.i("file", "end of oncreate" + myfiles.length);
-
+*/
 
     }
 

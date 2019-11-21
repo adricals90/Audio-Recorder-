@@ -3,6 +3,7 @@ package c.adricals.AudioRecorder;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -11,17 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class myAdapter extends RecyclerView.Adapter<myAdapter.holder> {
 
     List<records> data = new LinkedList<>();
+    private Context mContext;
 
-    public myAdapter(ArrayList<records> items) {
-
+    public myAdapter(Context context, List<records> items) {
+        this.mContext = context;
         data = items;
+
     }
 
     @NonNull

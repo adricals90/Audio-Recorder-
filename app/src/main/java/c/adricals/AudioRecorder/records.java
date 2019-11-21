@@ -6,6 +6,7 @@ public class records {
     String details;
     int recImage = 0;
 
+
     records() {
 
     }
