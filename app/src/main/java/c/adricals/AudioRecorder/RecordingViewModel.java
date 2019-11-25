@@ -27,5 +27,4 @@ public class RecordingViewModel extends ViewModel {
         return list;
     }
 
-
 }

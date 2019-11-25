@@ -59,6 +59,9 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.holder> {
         return data.size();
     }
 
+    public records getRecordAt(int position) {
+        return data.get(position);
+    }
     public class holder extends RecyclerView.ViewHolder {
         TextView recName;
         TextView detailsName;

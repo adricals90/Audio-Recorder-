@@ -15,11 +15,13 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaRouter;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -123,9 +125,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mAdapter = new myAdapter(this, model.getRecords().getValue());
+
         mReycleView.setAdapter(mAdapter);
 
         //end of recyclerView
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                mReycleView.removeView(viewHolder.itemView);
+            }
+        });
+
 
         //Visualizer
 
@@ -139,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         record.setOnClickListener(recordListener);
+
 
         // recImplement = new RecordingsAccessImplementation();
 
