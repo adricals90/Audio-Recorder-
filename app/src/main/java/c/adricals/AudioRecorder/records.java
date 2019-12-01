@@ -1,9 +1,12 @@
 package c.adricals.AudioRecorder;
 
+import android.net.Uri;
+
 public class records {
 
     String recordName;
     String details;
+    Uri uri;
     int recImage = 0;
 
 

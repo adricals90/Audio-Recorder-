@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.media.MediaPlayer;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private static String mFileName;
     Button record;
     Button stop;
+    Button play;
     // Visualizer myVisualizer;
 
     RecAudio recordAudio;
@@ -79,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
                 recordAudio.OnRecording();
                 record.setText("Stop");
+                stop.setVisibility(View.GONE);
+                play.setVisibility(View.GONE);
+
 
             } else {
                 recordAudio.onStopRecording();
@@ -95,6 +100,16 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             // recordAudio.onStopRecording();
             record.setText("Record");
+        }
+    };
+
+    private View.OnClickListener playb = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Intent i = new Intent(getApplicationContext(), PlayerActivity.class);
+            startActivity(i);
+
         }
     };
 
@@ -151,12 +166,14 @@ public class MainActivity extends AppCompatActivity {
         //
         record = findViewById(R.id.recordButton);
         stop = findViewById(R.id.stopButton);
+        play = findViewById(R.id.playButton);
 
 
         recordAudio = new RecAudio();
 
 
         record.setOnClickListener(recordListener);
+        play.setOnClickListener(playb);
 
 
         // recImplement = new RecordingsAccessImplementation();
@@ -164,21 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /*File[] myfiles = recordAudio.directory.listFiles();
-
-        for (File i : myfiles) {
-            if (i.isDirectory()) {
-                Log.i("directory", "this is a dir " + i.getName());
-            } else {
-                Log.i("file", "this is a file " + i.getName());
-                myList.add(new records(i.getName(), "cache"));
-
-
-            }
-        }
-
-        Log.i("file", "end of oncreate" + myfiles.length);
-*/
 
     }
 

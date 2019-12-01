@@ -2,8 +2,6 @@ package c.adricals.AudioRecorder;
 
 import android.media.MediaRecorder;
 import android.os.Environment;
-import android.util.Log;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -39,8 +37,13 @@ public class RecAudio {
 
     public void setPath() {
 
-        Date d = new Date();
-        long time = d.getTime();
+        Date d = new Date();   //format  on May 04 09:51:52 CDT 2009
+
+        String[] date = d.toString().split(" ");
+        String hour = date[3];
+
+
+
         String dirName = "/Audio Recordings";
         directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), dirName);
 
@@ -48,28 +51,24 @@ public class RecAudio {
             directory.mkdir();
         }
 
-        fileName = directory.getAbsolutePath() + "/Recording " + time + ".3gp";
+        fileName = directory.getAbsolutePath() + "/Recording " + hour + ".m4a";
     }
 
 
     public void OnRecording() {
 
-        // if(myRecorder == null){
         myRecorder = new MediaRecorder();
-        // }else{
         myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        myRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        myRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        myRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         myRecorder.setOutputFile(fileName);
 
-        Log.i("path inside the object ", fileName);
         try {
             myRecorder.prepare();
             myRecorder.start();
 
         } catch (IOException e) {
             e.printStackTrace();
-            //  Log.i("failed to prepare()", e.toString());
         }
 
     }

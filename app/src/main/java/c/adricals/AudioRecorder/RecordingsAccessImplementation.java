@@ -4,6 +4,8 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,20 +20,42 @@ public class RecordingsAccessImplementation implements RecordingStorageAccess {
 
     RecordingsAccessImplementation() {
         recordingsList = new MutableLiveData<>();
-        root = new File(Environment.getExternalStorageDirectory().getPath() + "/Audio Recordings");
-        File[] items = root.listFiles();
-
         list = new LinkedList<records>();
-        records temp;
-        for (File recordFile : items) {
-            temp = new records(recordFile.getName(), "details");
-            list.add(temp);
-        }
-        Log.d("error", "RecordingsAccessImplementation: " + items.length);
+        root = new File(Environment.getExternalStorageDirectory().getPath() + "/Audio Recordings");
 
+        if (root.exists()) {
+            File[] items = root.listFiles();
+            records temp;
+            for (File recordFile : items) {
+
+                double recLength = round(recordFile.length() * Math.pow(10, -6), 3);
+                String dateFormated = getDate(new Date(recordFile.lastModified()).toString());
+
+                String details = dateFormated + " " + recLength + " MB";
+
+                temp = new records(recordFile.getName(), details);
+                list.add(temp);
+            }
+            Log.d("error", "RecordingsAccessImplementation: " + items.length);
+        }
 
         recordingsList.setValue(list);
 
+    }
+
+    public String getDate(String date) {
+
+        String[] d = date.toString().split(" ");  // [on, May, 04, 09:51:52, CDT, 2009 ]
+        return new String(d[1] + " " + d[2]);
+
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
     @Override
