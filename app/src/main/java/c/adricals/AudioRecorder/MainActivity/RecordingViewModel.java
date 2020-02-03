@@ -1,4 +1,4 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RecordingViewModel extends ViewModel {
 
-    private MutableLiveData<List<records>> list;
+    private MutableLiveData<List<Record>> list;
     private Repository repository;
 
     public void init() {
@@ -23,7 +23,7 @@ public class RecordingViewModel extends ViewModel {
 
     }
 
-    public LiveData<List<records>> getRecords() {
+    public LiveData<List<Record>> getRecords() {
         return list;
     }
 

@@ -1,4 +1,4 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -51,7 +51,7 @@ public class RecAudio {
             directory.mkdir();
         }
 
-        fileName = directory.getAbsolutePath() + "/Recording " + hour + ".m4a";
+        fileName = directory.getAbsolutePath() + "/Recording " + hour+".m4a";
     }
 
 
@@ -59,8 +59,8 @@ public class RecAudio {
 
         myRecorder = new MediaRecorder();
         myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        myRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        myRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        myRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
         myRecorder.setOutputFile(fileName);
 
         try {

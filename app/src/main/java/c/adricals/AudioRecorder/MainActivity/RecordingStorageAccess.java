@@ -1,4 +1,4 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import androidx.lifecycle.MutableLiveData;
 public interface RecordingStorageAccess {
 
 
-    void insert(records items);
+    void insert(Record items);
 
     void remove(String name);
 
-    LiveData<List<records>> search(String name);
+    LiveData<List<Record>> search(String name);
 
-    MutableLiveData<List<records>> getRecordings();
+    MutableLiveData<List<Record>> getRecordings();
 
 }
 

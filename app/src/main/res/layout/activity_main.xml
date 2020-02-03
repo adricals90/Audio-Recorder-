@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity.MainActivity">
 
 
     <TextView
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <c.adricals.AudioRecorder.VisualizerView
+        <c.adricals.AudioRecorder.MainActivity.VisualizerView
             android:id="@+id/visualizerView"
             android:layout_width="match_parent"
             android:layout_height="200dp"

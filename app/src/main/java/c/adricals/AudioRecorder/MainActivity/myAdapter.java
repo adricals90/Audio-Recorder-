@@ -1,4 +1,4 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import android.content.Context;
 
@@ -12,18 +12,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.LinkedList;
 import java.util.List;
+
+import c.adricals.AudioRecorder.R;
 
 public class myAdapter extends RecyclerView.Adapter<myAdapter.holder> {
 
-    List<records> data = new LinkedList<>();
+    List<Record> data ;
     private Context mContext;
+    private OnItemClickListener mListener;
 
-    public myAdapter(Context context, List<records> items) {
+
+
+
+    public myAdapter(Context context, List<Record> items) {
         this.mContext = context;
         data = items;
 
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
     }
 
     @NonNull
@@ -36,7 +50,7 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.holder> {
 
         View newView = inflater.inflate(R.layout.items_view, viewGroup, false);
 
-        holder myVholder = new holder(newView);
+        holder myVholder = new holder(newView, mListener);
 
 
         return myVholder;
@@ -45,11 +59,9 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.holder> {
     @Override
     public void onBindViewHolder(@NonNull holder holder, int i) {
 
-
         holder.recName.setText(data.get(i).recordName);
         holder.detailsName.setText(data.get(i).details);
         holder.myImage.setImageResource(R.drawable.ic_music_note_black_24dp);
-
 
     }
 
@@ -59,20 +71,37 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.holder> {
         return data.size();
     }
 
-    public records getRecordAt(int position) {
+    public Record getRecordAt(int position) {
         return data.get(position);
     }
-    public class holder extends RecyclerView.ViewHolder {
+
+    public static class holder extends RecyclerView.ViewHolder  {
         TextView recName;
         TextView detailsName;
         ImageView myImage;
 
-        public holder(@NonNull View itemView) {
+        public holder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             recName = itemView.findViewById(R.id.recordName);
             detailsName = itemView.findViewById(R.id.recordDetails);
             myImage = itemView.findViewById(R.id.imageV);
+
+            itemView.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
+
+
     }
+
 }

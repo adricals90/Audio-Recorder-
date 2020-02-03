@@ -1,4 +1,4 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import android.content.Context;
 import android.graphics.Canvas;

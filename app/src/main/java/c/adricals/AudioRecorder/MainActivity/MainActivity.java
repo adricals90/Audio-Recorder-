@@ -1,14 +1,9 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.icu.util.Calendar;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -16,8 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.MediaRouter;
-import android.media.audiofx.Visualizer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.lifecycle.Observer;
@@ -26,26 +20,23 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+
+
+import c.adricals.AudioRecorder.PlayerActivity;
+import c.adricals.AudioRecorder.R;
 
 import static androidx.appcompat.app.AlertDialog.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     RecyclerView mReycleView;
-    RecyclerView.Adapter mAdapter;
+    myAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     RecordingViewModel model;
 
@@ -94,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+
+
     private View.OnClickListener stopButton = new View.OnClickListener() {
 
         @Override
@@ -123,26 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        mReycleView = findViewById(R.id.myRecycleView);
-        mReycleView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mReycleView.setLayoutManager(mLayoutManager);
 
-        model = ViewModelProviders.of(this).get(RecordingViewModel.class);
-        model.init();
-        model.getRecords().observe(this, new Observer<List<records>>() {
-            @Override
-            public void onChanged(List<records> records) {
-                mAdapter.notifyDataSetChanged();
-
-            }
-
-        });
-
-        mAdapter = new myAdapter(this, model.getRecords().getValue());
-
-        mReycleView.setAdapter(mAdapter);
-
+        buildRecyclerView();
         //end of recyclerView
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -155,9 +131,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                mReycleView.removeView(viewHolder.itemView);
+                Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+                startActivity(intent);
             }
-        });
+        }).attachToRecyclerView(mReycleView);
 
 
         //Visualizer
@@ -192,6 +169,52 @@ public class MainActivity extends AppCompatActivity {
             recordAudio.myRecorder = null;
         }
     }*/
+
+   public void buildRecyclerView(){
+
+       mReycleView = findViewById(R.id.myRecycleView);
+       mReycleView.setHasFixedSize(true);
+       mLayoutManager = new LinearLayoutManager(this);
+       mReycleView.setLayoutManager(mLayoutManager);
+
+       model = ViewModelProviders.of(this).get(RecordingViewModel.class);
+       model.init();
+
+       model.getRecords().observe(this, new Observer<List<Record>>() {
+           @Override
+           public void onChanged(List<Record> Record) {
+               mAdapter.notifyDataSetChanged();
+           }
+
+       });
+
+       mAdapter = new myAdapter(this, model.getRecords().getValue());
+
+
+       mReycleView.setAdapter(mAdapter);
+
+
+        mAdapter.setOnItemClickListener(new myAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+                Record r = model.getRecords().getValue().get(position);
+                r.recordName = "clicked";
+                Uri u = r.uri;
+                Toast.makeText(getApplicationContext(), "on item selected "+r.details, Toast.LENGTH_LONG).show();
+
+
+
+                Log.i("items1111", "onItemclickecinsidasdsda "+position);
+
+
+                Intent in = new Intent(getApplicationContext(),PlayerActivity.class);
+                in.setData(u);
+                startActivity(in);
+            }
+        });
+
+   }
 
 
 

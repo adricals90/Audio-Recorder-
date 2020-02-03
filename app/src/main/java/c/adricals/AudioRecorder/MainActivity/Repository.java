@@ -1,6 +1,5 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class Repository {
         recDataAccess = recAccess;
     }
 
-    public MutableLiveData<List<records>> recordingsList() {
+    public MutableLiveData<List<Record>> recordingsList() {
         return recDataAccess.getRecordings();
     }
 

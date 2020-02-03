@@ -1,8 +1,8 @@
-package c.adricals.AudioRecorder;
+package c.adricals.AudioRecorder.MainActivity;
 
 import android.net.Uri;
 
-public class records {
+public class Record {
 
     String recordName;
     String details;
@@ -10,14 +10,14 @@ public class records {
     int recImage = 0;
 
 
-    records() {
+    Record() {
 
     }
 
-
-    records(String name, String det) {
+    Record(String name, String det,Uri uri) {
         recordName = name;
         details = det;
+        this.uri = uri;
 
     }
 
